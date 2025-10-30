@@ -10,7 +10,5 @@ class Bebida extends Articulo {
         $this->tamaño = $tamaño;
         $this->temperatura = $temperatura;
     }
-    
-    
 }
 ?>

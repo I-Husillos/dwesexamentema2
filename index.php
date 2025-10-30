@@ -52,7 +52,6 @@ function imprimirListaArticulos($articulos){
         if($articulo instanceof Bebida){
             echo " (Tamaño: " . $articulo->tamaño . ", Temperatura: " . $articulo->temperatura . ")";
         }
-        echo "</li>";
     }
 }
 
