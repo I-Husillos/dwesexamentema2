@@ -14,5 +14,7 @@ class Articulo {
         $this->disponibilidad = $disponibilidad;
         $this->categoria = $categoria;
     }
+
+
 }
 ?>

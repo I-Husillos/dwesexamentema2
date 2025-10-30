@@ -34,10 +34,12 @@ $ubicaciones = [
     ]
 ];
 
-$pedido = ["Ensalada César", "Pizza Margarita", "Café"];
+$pedido = ["Ensalada César", "Pizza Margarita", "Café", "Gambas"];
 
 // TODO Filtrar platos por disponibilidad, guardando en variable $disponibles
-$disponibles =
+$disponibles = array_filter($menu, function($articulo) {
+    return $articulo->disponibilidad;
+});
 
 //////////////////////////////
 //        FUNCIONES         //
@@ -45,18 +47,57 @@ $disponibles =
 
 // TODO Función para imprimir una lista de artículos con nombre y precio
 function imprimirListaArticulos($articulos){
-
+    foreach ($articulos as $articulo) {
+        echo "<li>" . $articulo->nombre . " - €" . $articulo->precio;
+        if($articulo instanceof Bebida){
+            echo " (Tamaño: " . $articulo->tamaño . ", Temperatura: " . $articulo->temperatura . ")";
+        }
+        echo "</li>";
+    }
 }
+
 
 // TODO Función para imprimir un pedido
 function imprimirPedido($pedido, $menu) {
-
+    $total = 0;
+    echo "<table border='1'>";
+    echo "<tr><th>Artículo</th><th>Precio</th></tr>";
+    foreach ($pedido as $nombrePedido) {
+        $encontrado = false;
+        foreach ($menu as $articulo) {
+            if ($articulo->nombre === $nombrePedido) {
+                $encontrado = true;
+                if ($articulo->disponibilidad) {
+                    echo "<tr><td>" . $articulo->nombre . "</td><td>€" . $articulo->precio . "</td></tr>";
+                    $total += $articulo->precio;
+                } else {
+                    echo "<tr><td>" . $articulo->nombre . "</td><td>No disponible</td></tr>";
+                }
+                break;
+            }
+        }
+        if (!$encontrado) {
+            echo "<tr><td>" . $nombrePedido . "</td><td>No encontrado en el menú</td></tr>";
+        }
+    }
+    echo "<tr><td><strong>Total</strong></td><td><strong>$" . $total . "</strong></td></tr>";
+    echo "</table>";
 }
+
+
 
 // TODO Función para imprimir las ubicaciones
 function imprimirUbicaciones($ubicaciones) {
-
+    echo "<ul>";
+    foreach ($ubicaciones as $nombre => $datos) {
+        echo "<li><strong>$nombre</strong>: ";
+        echo $datos['direccion'] . ". ";
+        echo "Teléfono: " . $datos['telefono'] . ". ";
+        echo "Horario: " . $datos['horario'] . "</li>";
+    }
+    echo "</ul>";
 }
+
 
 ?>
 
@@ -80,15 +121,3 @@ imprimirPedido($pedido, $menu);
 
 <h2>Ubicaciones de Recogida:</h2>
 <?php imprimirUbicaciones($ubicaciones); ?>
-
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Examen DWES Tema 2</title>
-</head>
-<body>
-    
-</body>
-</html>
